@@ -1,1 +1,1 @@
-from .serialize import serialize
+from utils import serialize

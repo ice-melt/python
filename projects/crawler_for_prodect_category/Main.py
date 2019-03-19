@@ -18,7 +18,7 @@ import queue
 import threading
 import csv
 Logger = log.Logger('crawler.log', level='debug').logger
-
+from category_output.output import Output
 
 class App:
     def __init__(self):
@@ -172,153 +172,6 @@ def parser_html(url, content, product_categories, product_subcategories):
     return datas
 
 
-# 序列化
-def object_serialize(filename, data):
-    with open('%s.pkl' % filename, 'wb') as f:
-        pickle.dump(data, f)
-
-
-# 反序列化
-def object_unserialize(filename):
-    with open('%s.pkl' % filename, 'rb') as f:
-        return pickle.load(f)
-
-
-# 导出数据到html
-class Output(object):
-    def __init__(self):
-        """
-        定义需要爬取的内容的数组
-        """
-        self.datas = []
-        self.filename = 'product.temp'
-
-    def get_filename(self, suffix):
-        prefix = self.filename.replace('https://', '').replace('http://', '')
-        timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-        self.filename = '%s_%s.%s' % (prefix, timestamp, suffix)
-        return self.filename
-
-    def store_datas(self, datas):
-        """
-        将爬取的datas数据存放到self.datas中
-        :param datas:
-        :return:
-        """
-        for key in datas:
-            self.datas.append(key)
-
-    def output_html(self):
-        """
-        将爬取的数据导出到html
-        :return:
-        """
-        Logger.info('Output to html file, please wait ...')
-        # object_serialize('object.pkl',self.datas)
-        # categories , description,url
-        with codecs.open(self.get_filename('html'), 'w', 'utf-8') as file:
-            file.write('<html>\n')
-            file.write('<head>\n')
-            file.write('<meta charset="utf-8"/>\n')
-            file.write('<style>\n')
-            file.write('table{font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;'
-                       'width:100%;border-collapse:collapse;}\n')
-            file.write('table th,table td{font-size:1em;border:1px solid #98bf21;padding:3px 7px 2px 7px;}\n')
-            file.write('table th{font-size:1.1em;background-color:#A7C942;color:#ffffff;'
-                       'padding:5px 7px 4px 7px;text-align:left;}\n')
-            file.write('table tr.alt td{background-color:#EAF2D3;color:#000000;}\n')
-            file.write('a:link{text-decoration: none;}\n')
-            file.write('a:visited{text-decoration: none;}\n')
-            file.write('a:hover{text-decoration: underline;}\n')
-            file.write('</style>\n')
-            file.write('</head>\n')
-            file.write('<body>\n')
-            file.write('<table>\n')
-            # 输出首行
-            file.write('<tr><th>Sequence</th><th>Product Categories</th>'
-                       '<th>Product SubCategories</th><th>Description</th></tr>\n')
-            for i in range(len(self.datas)):
-                key = self.datas[i]
-                clazz = '' if i % 2 == 0 else ' class="alt" '
-                file.write('<tr %s><td>%05d</td><td>%s</td><td>%s</td>'
-                           '<td><a target="_blank" href="%s">%s</a></td></tr>\n'
-                           % (clazz, i+1, key['categories'], key['subcategories'], key['url'], key['description']))
-            file.write('</table>\n')
-            file.write('</body>\n')
-            file.write('</html>\n')
-        Logger.info(' Save completed !')
-
-    def output_csv(self):
-        """
-        将爬取的数据导出到html
-        :return:
-        """
-        Logger.info('Output to csv file, please wait ...')
-        # categories , description,url
-        with open(self.get_filename('csv'), 'w') as csvfile:
-            file = csv.writer(csvfile)
-            # 写入首行
-            file.writerow(['Sequence', 'Product Categories', 'Product SubCategories', 'Description', 'URL'])
-            for i in range(len(self.datas)):
-                key = self.datas[i]
-                sequence = i+1
-                categories = key['categories']
-                subcategories = key['subcategories']
-                description = key['description']
-                url = key['url']
-                file.writerow([sequence, categories, subcategories, description, url])
-        Logger.info(' Save completed !')
-
-    def output_excel(self):
-        wbk = xlwt.Workbook(encoding='utf-8')
-        pattern = xlwt.Pattern()
-        # May be: NO_PATTERN, SOLID_PATTERN, or 0x00 through 0x12
-        pattern.pattern = xlwt.Pattern.SOLID_PATTERN
-        # May be: 8 through 63.
-        # 0 = Black, 1=White, 2=Red, 3=Green, 4=Blue, 5 = Yellow, 6 = Magenta, 7 = Cyan,
-        # 16 = Maroon, 17 = Dark Green, 18 = Dark Blue, 19 = Dark Yellow , almost brown),
-        # 20 = Dark Magenta, 21 = Teal, 22 = Light Gray, 23 = Dark Gray, the list goes on...
-        pattern.pattern_fore_colour = 5
-        borders = xlwt.Borders()
-        # DASHED虚线 NO_LINE没有 THIN实线
-        borders.left = xlwt.Borders.THIN
-        # May be: NO_LINE, THIN, MEDIUM, DASHED, DOTTED, THICK, DOUBLE, HAIR,
-        # MEDIUM_DASHED, THIN_DASH_DOTTED, MEDIUM_DASH_DOTTED, THIN_DASH_DOT_DOTTED,
-        # MEDIUM_DASH_DOT_DOTTED, SLANTED_MEDIUM_DASH_DOTTED, or 0x00 through 0x0D.
-        borders.right = xlwt.Borders.THIN
-        borders.top = xlwt.Borders.THIN
-        borders.bottom = xlwt.Borders.THIN
-        borders.left_colour = 0x40
-        borders.right_colour = 0x40
-        borders.top_colour = 0x40
-        borders.bottom_colour = 0x40
-        style = xlwt.XFStyle()
-        style.pattern = pattern
-        style.borders = borders
-        sheet_name = ''
-        sheet_rows = 0
-        row = 0
-        sheet = None
-        for i in range(len(self.datas)):
-            key = self.datas[i]
-            categories = key['categories'].replace('/', ' ')
-            if sheet_name != categories:
-                sheet_name = categories
-                sheet = wbk.add_sheet(sheet_name)
-                sheet.write(0, 0, 'Sequence', style)
-                sheet.write(0, 1, 'Product SubCategories', style)
-                sheet.col(1).width = 256*20
-                sheet.write(0, 2, 'Description', style)
-                sheet_rows += row
-            row = i-sheet_rows+1
-            if row == -21:
-                print(row)
-            sheet.write(row, 0, row)
-            sheet.write(row, 1, key['subcategories'])
-            link = 'HYPERLINK("%s","%s")\n' % (key['url'], key['description'].replace('"', '""'))
-            sheet.write(row, 2, xlwt.Formula(link))
-        wbk.save(self.get_filename('xls'))
-
 
 # 调度器
 class Scheduler(object):
@@ -335,7 +188,7 @@ class Scheduler(object):
         :return:
         """
         # 根据主页面得到第一个类目的链接地址
-        self.output.filename = root_url
+        self.output.set_url(root_url)
         html = download(root_url)
         if html == '404':
             Logger.error('%s 无法解析,请联系开发人员' % root_url)
@@ -381,9 +234,7 @@ class Scheduler(object):
                     product_categories_href = child['url']
                     # chi = child['children']
                     self.crawler(root_url, product_categories_href, product_categories, product_subcategories)
-        self.output.output_excel()
-        # self.output.output_html()
-        # self.output.outputCSV()
+        self.output.to_file('EXCEL')
 
     def crawler(self, root_url, product_categories_href, product_categories, product_subcategories):
         """
