@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from category_output import output_factory
-from category_output import test
+from modules.utils import serialize
 
 class Output:
     def __init__(self, url=""):
@@ -27,7 +27,9 @@ class Output:
 
 if __name__ == '__main__':
     output = Output('https://baidu.com')
-    test_datas = test.get_datas()
+    filename = 'ifoaming.en.alibaba.com.pkl'
+    test_datas = serialize.unserialize(
+        "F:\\Document\\workspace\\python\\projects\\crawler_for_prodect_category\\data\\dataset\\%s" % filename)
     output.store_datas(test_datas)
     output.to_file('HTML')
     output.to_file('CSV')
