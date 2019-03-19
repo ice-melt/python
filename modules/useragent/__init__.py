@@ -5,9 +5,10 @@ from .opera import opera
 from .safari import safari
 import random
 
-def getUserAgent(browser=''):
+
+def get_user_agent(browser=''):
     browser = browser.lower()
-    userAgent = {
+    user_agent = {
         'chrome': chrome,
         'firefox': firefox,
         'mozilla': mozilla,
@@ -15,10 +16,10 @@ def getUserAgent(browser=''):
         'safari': safari,
         'all': chrome + firefox + mozilla + opera + safari
     }
-    #if browser == 'chrome' or browser == 'firefox' or browser == 'mozilla' or browser == 'opera' or browser == 'safari':
-    if browser in userAgent:
-        ua = random.choice(userAgent[browser])
+
+    if browser in user_agent:
+        ua = random.choice(user_agent[browser])
     else:
-        ua = random.choice(userAgent['all'])
+        ua = random.choice(user_agent['all'])
     return ua
 
