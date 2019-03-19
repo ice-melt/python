@@ -3,11 +3,7 @@
 
 
 --- 
-爬虫模块代码参考: [水煮菠菜Github][crawler]
 
-
----
-[crawler]: https://github.com/shuizhubocai/crawler
 
 ## 垃圾区
 ---
