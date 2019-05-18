@@ -1,8 +1,9 @@
 # !/usr/bin/python3
-from category_output import output_utils
+from projects.crawler_for_prodect_category.category_output import output_utils
 import csv
 
 Logger = output_utils.Logger
+
 
 def output(filename, datas):
     """
@@ -24,5 +25,3 @@ def output(filename, datas):
             url = key['url']
             file.writerow([sequence, categories, subcategories, description, url])
     Logger.info(' Save completed !')
-
-

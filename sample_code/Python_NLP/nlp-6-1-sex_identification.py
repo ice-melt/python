@@ -65,7 +65,7 @@ evaluation(classifier, test_set)
 # 分析
 classifier.show_most_informative_features(5)
 
-# ======================= output ==================================
+# ======================= output111 ==================================
 # ===================== 特征集中使用简单的特征进行训练,结果如下:
 # {'last_letter': 'h'}
 # Neo预测为male

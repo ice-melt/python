@@ -1,27 +1,21 @@
-# python常用代码模块化
+# python-lib
+常用代码示例整理
 
+## 目录结构说明
+```bash
+├── assets          全局常用代码,目录添加到全局路径
+│   ├── useragent       请求代理
+├── projects        练习项目代码
+│── sample_code     学习时遇到的demo代码
+│   └── Python_NLP      python自然语言处理示例代码
+├── LICENSE
+└── README.md
+
+```
 
 
 --- 
 
 
-## 垃圾区
----
-|widgets|描述|
-|---:|:---|
-|Frame		 |框架		|
-|Label       |标签      |
-|Entry       |条目      |
-|Text        |文本      |
-|Canvas      |画布      |
-|Button      |按钮      |
-|Radiobutton |单选按钮  |
-|Checkbutton |复选按钮  |
-|Scale       |比例      |
-|Listbox     |列表框    |
-|Scrollbar   |滚动条    |
-|OptionMenu  |选项菜单  |
-|Spinbox     |数字框    |
-|LabelFrame  |标签框    |
-|PanedWindow |窗格窗口  |
+
 

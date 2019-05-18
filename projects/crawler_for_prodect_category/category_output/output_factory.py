@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-from category_output import to_csv
-from category_output import to_excel
-from category_output import to_html
+from projects.crawler_for_prodect_category.category_output import to_csv
+from projects.crawler_for_prodect_category.category_output import to_excel
+from projects.crawler_for_prodect_category.category_output import to_html
 
 output_map = {
     'CSV': to_csv,
@@ -12,7 +12,7 @@ output_map = {
 
 def factory(file_type):
     """
-    输出工厂,默认生产 output html 实例对象
+    输出工厂,默认生产 output111 html 实例对象
     :param file_type:
     :return:  根据传入的参数默认生产出对应的output实例对象
     """

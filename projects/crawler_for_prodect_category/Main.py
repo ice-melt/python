@@ -1,24 +1,22 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
-import requests
-import codecs
-from modules import useragent
-from modules import log
-import json
+from assets import useragent
+from assets.log import log
+from projects.crawler_for_prodect_category.category_output.output import Output
 from urllib.parse import urljoin, unquote
 from lxml import etree
-import pickle
-import xlwt
-import traceback
 from tkinter import *
 from tkinter import ttk
 import tkinter.filedialog as filedialog
+import json
 import time
 import queue
+import requests
 import threading
-import csv
-Logger = log.Logger('crawler.log', level='debug').logger
-from category_output.output import Output
+import traceback
+
+Logger = log('crawler.log', level='debug').logger
+
 
 class App:
     def __init__(self):
@@ -87,6 +85,7 @@ class App:
             for i in range(5):
                 time.sleep(1)
             _queue.put((1,))
+
         th = threading.Thread(target=scan, args=(self.notify_queue,))
         th.setDaemon(True)
         th.start()
@@ -156,8 +155,8 @@ def parser_html(url, content, product_categories, product_subcategories):
     :return:
     """
     html = etree.HTML(content)
-    xpath = "//div[contains(@class,'module-product-list')]"\
-            "//div[contains(@class,'product-info')]"\
+    xpath = "//div[contains(@class,'module-product-list')]" \
+            "//div[contains(@class,'product-info')]" \
             "//a[@class='title-link icbu-link-normal']"
     item = html.xpath(xpath)
 
@@ -170,7 +169,6 @@ def parser_html(url, content, product_categories, product_subcategories):
             'url': urljoin(url, key.get('href'))
         })
     return datas
-
 
 
 # 调度器
@@ -267,6 +265,7 @@ class Scheduler(object):
             except Exception as e:
                 # print('e.message:\t', e.message)
                 Logger.error(' ====== crawler fail ======= \n%s' % traceback.format_exc())
+
 
 if __name__ == '__main__':
     app = App()

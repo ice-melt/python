@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-from modules.crawler import download
-from modules.crawler import urls
+from projects.crawler_for_blogs.crawler import download, urls
 import codecs
 from urllib.parse import urljoin
 from lxml import etree
+
 
 # 页面解析
 class Parser(object):
@@ -58,7 +58,9 @@ class Parser(object):
         :param html:
         :return:
         """
-        return [urljoin(url, key) for key in html.xpath("//nav[@class='page-nav text-center']//a[contains(@class, 'page-number')]//@href")]
+        return [urljoin(url, key) for key in
+                html.xpath("//nav[@class='page-nav text-center']//a[contains(@class, 'page-number')]//@href")]
+
 
 # 导出数据到html
 class Output(object):
@@ -87,6 +89,7 @@ class Output(object):
             file.write('<meta charset="utf-8"/>')
             for key in self.datas:
                 file.write('<p><a target="_blank" href="%s">%s</a>,%s</p>\n' % (key['url'], key['title'], key['url']))
+
 
 # 调度器
 class Scheduler(object):

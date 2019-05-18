@@ -53,7 +53,7 @@ for (tag, guess, name) in sorted(errors):
     print('correct=%-8s guess=%-8s name=%-30s' % (tag, guess, name))
 
 
-# ======================= output ==================================
+# ======================= output111 ==================================
 # ===================== 特征集中使用2个的特征进行训练,结果如下:
 # 测试集的精度为0.758000
 # correct=female   guess=male     name=Aeriell

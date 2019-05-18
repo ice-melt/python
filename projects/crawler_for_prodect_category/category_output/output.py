@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-from category_output import output_factory
-from modules.utils import serialize
+from projects.crawler_for_prodect_category.category_output import output_factory
+from assets.util import unserialize
+
 
 class Output:
     def __init__(self, url=""):
@@ -28,7 +29,7 @@ class Output:
 if __name__ == '__main__':
     output = Output('https://baidu.com')
     filename = 'ifoaming.en.alibaba.com.pkl'
-    test_datas = serialize.unserialize(
+    test_datas = unserialize(
         "F:\\Document\\workspace\\python\\projects\\crawler_for_prodect_category\\data\\dataset\\%s" % filename)
     output.store_datas(test_datas)
     output.to_file('HTML')

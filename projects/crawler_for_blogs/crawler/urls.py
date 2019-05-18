@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 # 地址管理器
 class Urls(object):
 

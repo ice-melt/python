@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-from category_output import output_utils
+from projects.crawler_for_prodect_category.category_output import output_utils
 import codecs
 
 Logger = output_utils.Logger
+
 
 def output(filename, datas):
     """

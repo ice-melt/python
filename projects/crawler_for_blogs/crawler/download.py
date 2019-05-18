@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import useragent
+from assets import useragent
 import requests
+
 
 # 页面下载
 def download(url):
