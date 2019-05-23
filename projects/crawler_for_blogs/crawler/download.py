@@ -19,4 +19,4 @@ def download(url):
         print('正在抓取地址:%s' % url)
         print('User-Agent:', r.request.headers.get('user-agent'))
         return True, r.content
-    return False, ''
+    return False, 'download error'

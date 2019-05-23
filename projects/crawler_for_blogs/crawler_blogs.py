@@ -47,7 +47,6 @@ class Parser(object):
                     'title': item1,
                     'url': item2
                 })
-
         return datas
 
     @staticmethod
@@ -112,12 +111,15 @@ class Scheduler(object):
         while self.urls.get_new_urls_length() > 0:
             try:
                 url = self.urls.get_new_url()
-                content = download.download(url)
-                links, datas = self.parserHTML.parser_html(url, content)
-                self.urls.add_new_urls(links)
-                self.output.store_datas(datas)
+                flag, content = download.download(url)
+                if flag:
+                    links, datas = self.parserHTML.parser_html(url, content)
+                    self.urls.add_new_urls(links)
+                    self.output.store_datas(datas)
+                else:
+                    print(content)
             except Exception as e:
-                print('crawler fail')
+                print(e, 'crawler fail')
         self.output.to_html()
 
 
